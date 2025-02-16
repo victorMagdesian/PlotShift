@@ -12,10 +12,12 @@ const mediaType = params.get("type"); // "movie" ou "tv"
 const titleDetail = document.getElementById("titleDetail");
 const mediaDetail = document.getElementById("mediaDetail");
 
-// Inicializa o EasyMDE para o textarea de finais alternativos
+// ==========================================
+// INICIALIZAÇÃO DO EasyMDE
+// ==========================================
 const easyMDE = new EasyMDE({
   element: document.getElementById("alternativeText"),
-  autoDownloadFontAwesome: false,
+  autoDownloadFontAwesome: true,  // Para garantir que os ícones sejam carregados
   toolbar: [
     "bold", "italic", "heading", "|",
     "quote", "unordered-list", "ordered-list", "|",
@@ -24,7 +26,9 @@ const easyMDE = new EasyMDE({
   spellChecker: false
 });
 
-// Função para buscar detalhes do filme/série
+// ==========================================
+// FUNÇÃO: Buscar detalhes do filme/série
+// ==========================================
 async function fetchMediaDetail() {
   if (!mediaId || !mediaType) {
     mediaDetail.innerHTML = "<p>ID ou tipo inválido.</p>";
@@ -37,13 +41,15 @@ async function fetchMediaDetail() {
     const res = await fetch(url);
     const data = await res.json();
 
-    const displayTitle = data.title || data.name;
+    const displayTitle = data.title || data.name || "Sem Título";
     titleDetail.textContent = displayTitle;
 
-    const poster = data.poster_path ? `${IMG_URL}${data.poster_path}` : "https://via.placeholder.com/300x450?text=Sem+Imagem";
+    const poster = data.poster_path
+      ? `${IMG_URL}${data.poster_path}`
+      : "https://via.placeholder.com/300x450?text=Sem+Imagem";
 
     mediaDetail.innerHTML = `
-      <img src="${poster}" alt="${displayTitle}">
+      <img src="${poster}" alt="${displayTitle}" />
       <div class="media-info">
         <h2>${displayTitle}</h2>
         <p>${data.overview || "Sem descrição disponível."}</p>
@@ -56,7 +62,9 @@ async function fetchMediaDetail() {
   }
 }
 
-// Gerenciamento de finais alternativos usando localStorage (mantendo a mesma lógica)
+// ==========================================
+// LOCALSTORAGE: Salvar e carregar finais
+// ==========================================
 const storageKey = `alternatives_${mediaType}_${mediaId}`;
 
 function getAlternatives() {
@@ -68,12 +76,17 @@ function saveAlternatives(alternatives) {
   localStorage.setItem(storageKey, JSON.stringify(alternatives));
 }
 
-// Renderiza os finais alternativos, convertendo o Markdown para HTML com marked
+// ==========================================
+// FUNÇÃO: Renderizar os finais alternativos
+// ==========================================
 function renderAlternatives() {
-  const alternatives = getAlternatives();
-  // Ordena por votos (descendente)
-  alternatives.sort((a, b) => b.votes - a.votes);
   const alternativesList = document.getElementById("alternativesList");
+  const alternatives = getAlternatives();
+
+  // Ordena por votos (desc)
+  alternatives.sort((a, b) => b.votes - a.votes);
+
+  // Limpa a lista
   alternativesList.innerHTML = "";
 
   if (alternatives.length === 0) {
@@ -81,11 +94,12 @@ function renderAlternatives() {
     return;
   }
 
-  alternatives.forEach(alt => {
-    // Converte o conteúdo Markdown para HTML
+  // Para cada final, converte Markdown -> HTML com marked
+  alternatives.forEach((alt) => {
     const htmlContent = marked.parse(alt.text);
     const altDiv = document.createElement("div");
     altDiv.classList.add("alternative");
+
     altDiv.innerHTML = `
       <div class="alternative-content">${htmlContent}</div>
       <div class="vote-buttons">
@@ -98,30 +112,43 @@ function renderAlternatives() {
   });
 }
 
-// Evento de criação de novo final alternativo
-document.getElementById("alternativeForm").addEventListener("submit", (e) => {
+// ==========================================
+// EVENTO: Submeter novo final alternativo
+// ==========================================
+document.getElementById("alternativeForm").addEventListener("submit", function(e) {
   e.preventDefault();
+  console.log("Submit disparado!"); // Para debug
+
   const text = easyMDE.value().trim();
-  if (text === "") return;
+  if (!text) {
+    alert("Por favor, insira algum texto em Markdown.");
+    return;
+  }
 
   const alternatives = getAlternatives();
   const newAlt = {
-    id: Date.now(), // ID único baseado no timestamp
-    text,         // Conteúdo em Markdown
+    id: Date.now(), // ID único
+    text: text,     // Conteúdo em Markdown
     votes: 0
   };
+
   alternatives.push(newAlt);
   saveAlternatives(alternatives);
-  easyMDE.value(""); // Limpa o editor após envio
+
+  // Limpa o editor
+  easyMDE.value("");
   renderAlternatives();
 });
 
-// Evento de votação (delegação de eventos)
-document.getElementById("alternativesList").addEventListener("click", (e) => {
+// ==========================================
+// EVENTO: Votação (delegação de eventos)
+// ==========================================
+document.getElementById("alternativesList").addEventListener("click", function(e) {
   if (e.target.classList.contains("upvote") || e.target.classList.contains("downvote")) {
     const altId = Number(e.target.dataset.id);
     const alternatives = getAlternatives();
-    const alt = alternatives.find(a => a.id === altId);
+    const alt = alternatives.find((a) => a.id === altId);
+
     if (alt) {
       if (e.target.classList.contains("upvote")) {
         alt.votes++;
@@ -134,6 +161,8 @@ document.getElementById("alternativesList").addEventListener("click", (e) => {
   }
 });
 
-// Inicialização
+// ==========================================
+// INICIALIZAÇÃO
+// ==========================================
 fetchMediaDetail();
 renderAlternatives();

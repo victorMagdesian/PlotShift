@@ -1,0 +1,125 @@
+/* Estilos básicos para o projeto */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0 1rem;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+
+.back-link {
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  position: absolute;
+  left: 1rem;
+  top: 1.2rem;
+}
+
+.search-filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  gap: 0.5rem;
+}
+
+.search-filters input,
+.search-filters select {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.movies-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.movie-card {
+  background-color: #fff;
+  padding: 0.5rem;
+  border-radius: 4px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.movie-card img {
+  width: 100%;
+  border-radius: 4px;
+}
+
+.movie-card h3 {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  gap: 1rem;
+}
+
+.detail-section {
+  background-color: #fff;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.detail-section img {
+  max-width: 200px;
+  float: left;
+  margin-right: 1rem;
+}
+
+.alternative-section {
+  background-color: #fff;
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.alternative-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.alternative-section textarea {
+  padding: 0.5rem;
+  resize: vertical;
+  min-height: 80px;
+  font-size: 1rem;
+}
+
+.alternative {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.alternative p {
+  margin: 0.5rem 0;
+}
+
+.vote-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.vote-buttons button {
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+}

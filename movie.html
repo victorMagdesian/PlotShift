@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detalhes do Filme/Série</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back-link">&larr; Voltar</a>
+    <h1 id="titleDetail">Detalhes</h1>
+  </header>
+
+  <section id="detailSection" class="detail-section">
+    <!-- Informações do filme/série -->
+    <div id="mediaDetail"></div>
+  </section>
+
+  <section id="alternativeSection" class="alternative-section">
+    <h2>Criar Final Alternativo</h2>
+    <form id="alternativeForm">
+      <textarea id="alternativeText" placeholder="Descreva seu final alternativo..." required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+
+    <h2>Finais Alternativos Criados</h2>
+    <div id="alternativesList">
+      <!-- Lista de finais alternativos -->
+    </div>
+  </section>
+
+  <script src="movie.js"></script>
+</body>
+</html>

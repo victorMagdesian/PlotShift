@@ -17,11 +17,19 @@ const mediaDetail = document.getElementById("mediaDetail");
 // ==========================================
 const easyMDE = new EasyMDE({
   element: document.getElementById("alternativeText"),
-  autoDownloadFontAwesome: true,  // Para garantir que os ícones sejam carregados
+  autoDownloadFontAwesome: true,
   toolbar: [
-    "bold", "italic", "heading", "|",
-    "quote", "unordered-list", "ordered-list", "|",
-    "preview", "side-by-side", "fullscreen"
+    "bold",
+    "italic",
+    "heading",
+    "|",
+    "quote",
+    "unordered-list",
+    "ordered-list",
+    "|",
+    "preview",
+    "side-by-side",
+    "fullscreen"
   ],
   spellChecker: false
 });
@@ -31,7 +39,7 @@ const easyMDE = new EasyMDE({
 // ==========================================
 async function fetchMediaDetail() {
   if (!mediaId || !mediaType) {
-    mediaDetail.innerHTML = "<p>ID ou tipo inválido.</p>";
+    mediaDetail.innerHTML = "<p>ID ou tipo inválido. Certifique-se de ter ?id=xxx&type=xxx na URL.</p>";
     return;
   }
 
@@ -74,6 +82,7 @@ function getAlternatives() {
 
 function saveAlternatives(alternatives) {
   localStorage.setItem(storageKey, JSON.stringify(alternatives));
+  console.log("LocalStorage atualizado:", localStorage.getItem(storageKey));
 }
 
 // ==========================================
@@ -115,35 +124,42 @@ function renderAlternatives() {
 // ==========================================
 // EVENTO: Submeter novo final alternativo
 // ==========================================
-document.getElementById("alternativeForm").addEventListener("submit", function(e) {
+document.getElementById("alternativeForm").addEventListener("submit", function (e) {
   e.preventDefault();
-  console.log("Submit disparado!"); // Para debug
+  console.log("Submit disparado!");
 
+  // Conteúdo do editor
   const text = easyMDE.value().trim();
   if (!text) {
     alert("Por favor, insira algum texto em Markdown.");
     return;
   }
 
+  // Carrega lista atual do localStorage
   const alternatives = getAlternatives();
+
+  // Cria novo objeto
   const newAlt = {
     id: Date.now(), // ID único
     text: text,     // Conteúdo em Markdown
     votes: 0
   };
 
+  // Adiciona e salva
   alternatives.push(newAlt);
   saveAlternatives(alternatives);
 
   // Limpa o editor
   easyMDE.value("");
+
+  // Renderiza
   renderAlternatives();
 });
 
 // ==========================================
 // EVENTO: Votação (delegação de eventos)
 // ==========================================
-document.getElementById("alternativesList").addEventListener("click", function(e) {
+document.getElementById("alternativesList").addEventListener("click", function (e) {
   if (e.target.classList.contains("upvote") || e.target.classList.contains("downvote")) {
     const altId = Number(e.target.dataset.id);
     const alternatives = getAlternatives();

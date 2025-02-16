@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Detalhes do Filme/Série</title>
   <link rel="stylesheet" href="style.css">
+  <!-- CSS do EasyMDE -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
 </head>
 <body>
   <header>
@@ -20,26 +22,20 @@
   <section id="alternativeSection" class="alternative-section">
     <h2>Criar Final Alternativo</h2>
     <form id="alternativeForm">
-      <textarea id="alternativeText" placeholder="Descreva seu final alternativo..." required></textarea>
+      <!-- O textarea será transformado no editor Markdown via EasyMDE -->
+      <textarea id="alternativeText" placeholder="Descreva seu final alternativo em Markdown..." required></textarea>
       <button type="submit">Enviar</button>
     </form>
 
     <h2>Finais Alternativos Criados</h2>
     <div id="alternativesList">
-      <!-- Lista de finais alternativos -->
+      <!-- Aqui serão renderizados os finais alternativos -->
     </div>
   </section>
 
+  <!-- Scripts do EasyMDE e marked -->
+  <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="movie.js"></script>
-  <!-- Firebase App (necessário) -->
-
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
-
-  <!-- Firebase Authentication -->
-
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
-<!-- Firebase Firestore -->
-
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
 </body>
 </html>
